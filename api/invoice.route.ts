@@ -37,7 +37,7 @@ router.get("/:id", async (request, response) => {
   } catch (error) {
     console.error(error);
 
-    response.status(200).json({ error: {
+    response.status(500).json({ error: {
       status: 500,
       message: "Não foi possível carregar as faturas."
     }});
