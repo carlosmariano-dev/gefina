@@ -1,5 +1,5 @@
 import express, { response } from "express";
-import path, { join } from "node:path";
+import path from "node:path";
 
 import dashboard from "./dashboard.route.ts"; 
 import invoices from "./invoice.route.ts";
@@ -39,9 +39,11 @@ app.use("/api/dashboard", dashboard);
 
 app.use("/api/invoices", invoices);
 
-app.use((request) => {
-  if (!request.url.startsWith("/api")) express.static(dist);
-});
+// app.use((request) => {
+//   if (!request.url.startsWith("/api")) express.static(dist);
+// });
+
+app.use(express.static(dist));
 
 app.use((request, response, next) => {
   if (request.url.startsWith("/api") || request.method !== "GET") {
@@ -49,7 +51,12 @@ app.use((request, response, next) => {
     return;
   }
 
-  response.sendFile(join(dist, "index.html"));
+  response.sendFile(path.join(dist, "index.html"));
+  //  response.sendFile(path.join(dist, 'index.html'), (err) => {
+  //   if (err) {
+  //     next(); 
+  //   }
+  // });
 });
 
 app.use((_request, response) => {
