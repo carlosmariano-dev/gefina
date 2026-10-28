@@ -1,5 +1,6 @@
-import express, { response } from "express";
+import express from "express";
 import path from "node:path";
+import fs from "node:fs";
 
 import dashboard from "./dashboard.route.ts"; 
 import invoices from "./invoice.route.ts";
@@ -46,7 +47,11 @@ app.use("/api/invoices", invoices);
 app.use(express.static(dist));
 
 app.use((request, response, next) => {
-  if (request.url.startsWith("/api") || request.method !== "GET") {
+  if (
+    request.url.startsWith("/api") || 
+    request.method !== "GET" ||
+    !fs.existsSync(path.join(dist, "index.html"))
+  ) {
     next();
     return;
   }
