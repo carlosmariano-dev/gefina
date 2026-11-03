@@ -33,7 +33,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
     }
 
     return <form onSubmit={handleSubmit}>
-        <h2>{!props.invoice ? "Criar fatura" : "Editar fatura"}</h2>
+        <h2>{!props.invoice ? "Criar Fatura" : "Editar Fatura"}</h2>
 
         <div className="field"> 
             <label htmlFor="customer">Cliente</label>
@@ -90,6 +90,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
                 <input
                     id="dueDate"
                     type="date"
+                    min={issueDate}
                     value={dueDate}
                     onChange={(event) => setDueDate(event.target.value)}
                     required

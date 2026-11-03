@@ -4,7 +4,11 @@ import InvoiceTable from "./InvoiceTable.tsx";
 import { Invoice, InvoiceInput } from "./invoiceType.ts";
 import InvoiceForm from "./InvoiceForm.tsx";
 
-import { getAllInvoices, createInvoice } from "./invoiceApi.ts";
+import { 
+    getAllInvoices, 
+    createInvoice, 
+    updateInvoice 
+} from "./invoiceApi.ts";
 import { CustomerOption } from "./customerType.ts";
 
 export default function InvoicePage() {
@@ -15,10 +19,12 @@ export default function InvoicePage() {
     const [formError, setFormError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [dialogContent, setDialogContent] = useState(false);
+    const [target, setTarget] = useState<Invoice | null>(null);
 
     const dialogRef = useRef<HTMLDialogElement>(null);
 
-    function openModal() {
+    function openModal(invoice: Invoice | null) {
+        setTarget(invoice);
         setFormError(null);
         setDialogContent(true);
 
@@ -77,7 +83,12 @@ export default function InvoicePage() {
         setFormError(null);
 
         try {
-            await createInvoice(datas);
+            if(!target) {
+                await createInvoice(datas);
+            } else {
+                await updateInvoice(target.id, datas);
+            }
+            
             closeModal();
             await refresh();
         } catch (error) {
@@ -95,12 +106,15 @@ export default function InvoicePage() {
         <header className="page-header">
             <h1>Faturas</h1>
             <button 
-                onClick={openModal}
+                onClick={() => openModal(null)}
                 className="button-primary"
             >Nova Fatura</button>
         </header>
         <div className="panel">
-            <InvoiceTable invoices={invoices} />
+            <InvoiceTable 
+                invoices={invoices} 
+                edit={openModal}
+            />
         </div>
         <dialog 
             className="invoice-modal"
@@ -108,7 +122,7 @@ export default function InvoicePage() {
             onClose={() => setDialogContent(false)}
         >
             {dialogContent && <InvoiceForm 
-                invoice={null}
+                invoice={target}
                 custormers={customersOptions}
                 error={formError}
                 onDelete={() => null}
