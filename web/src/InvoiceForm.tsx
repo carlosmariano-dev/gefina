@@ -1,5 +1,11 @@
 import React, { SetStateAction, SubmitEvent, useState } from "react";
-import { Invoice, InvoiceInput, InvoiceStatus } from "./invoiceType.ts";
+
+import { 
+    Invoice, 
+    InvoiceInput, 
+    InvoiceStatus,
+    InvoiceFieldErrors
+} from "./invoiceType.ts";
 import { CustomerOption } from "./customerType.ts";
 
 
@@ -7,6 +13,7 @@ interface InvoiceFormProps {
     invoice: Invoice | null;
     custormers: CustomerOption[];
     error: string | null;
+    fieldErrors: InvoiceFieldErrors;
     confirmDelete: boolean;
     setConfirmDelete: React.Dispatch<SetStateAction<boolean>>;
     confirm: () => void;
@@ -17,7 +24,7 @@ interface InvoiceFormProps {
 }
 
 export default function InvoiceForm(props: InvoiceFormProps) {
-    const [customerId, setCustomerId] = useState(!props.invoice ? "" : props.invoice.customer.id);
+    const [customerId, setCustomerId] = useState(!props.invoice ? undefined : String(props.invoice.customer.id));
     const [amount, setAmount] = useState(!props.invoice ? "" : (props.invoice.amount / 100).toFixed(2));
     const [status, setStatus] = useState<InvoiceStatus>(!props.invoice ? "pending" : props.invoice.status);
     const [issueDate, setIssueDate] = useState(!props.invoice ? "" : props.invoice.issueDate);
@@ -26,6 +33,8 @@ export default function InvoiceForm(props: InvoiceFormProps) {
     const handleSubmit = (event: SubmitEvent) => {
         event.preventDefault();
         props.setConfirmDelete(false);
+
+        
 
         props.onSubmit({
             customerId: Number(customerId),
@@ -47,7 +56,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
                 onChange={(event) => setCustomerId(event.target.value)}
                 required
             >
-                <option>Selecione um Cliente</option>
+                <option value="">Selecione um Cliente</option>
                 {props.custormers.map((customer) => {
                     return <option key={customer.id} value={customer.id}>
                         {customer.name} — {customer.email}
@@ -102,26 +111,24 @@ export default function InvoiceForm(props: InvoiceFormProps) {
             </div>
         </div>
 
-        {!props.error ? null : <p>{props.error}</p>}
-    
         <div className="form-actions">
             {!props.invoice ? null : <button 
                 className="button-danger"
                 type="button"
                 onClick={props.onDelete}
                 disabled={props.busy}
-            >{props.busy && props.confirmDelete ? "Eliminando..." : "Eliminar"}</button>}
+                >{props.busy && props.confirmDelete ? "Eliminando..." : "Eliminar"}</button>}
             <button 
                 className="button-secondary"
                 type="button"
                 onClick={props.onCancel}
                 disabled={props.busy}
-            >Cancelar</button>
+                >Cancelar</button>
             <button 
                 className="button-primary"
                 type="submit"
                 disabled={props.busy}
-            >{props.busy && !props.confirmDelete ? "Salvando..." : "Salvar"}</button>
+                >{props.busy && !props.confirmDelete ? "Salvando..." : "Salvar"}</button>
         </div>
 
         {props.confirmDelete &&  <div className="confirm-form">
@@ -131,13 +138,20 @@ export default function InvoiceForm(props: InvoiceFormProps) {
                 type="button"
                 onClick={() => props.setConfirmDelete(false)}
                 disabled={props.busy}
-            >Não</button>
+                >Não</button>
             <button
                 className="button-danger"
                 type="button"
                 onClick={props.confirm}
                 disabled={props.busy}
-            >Sim</button>
+                >Sim</button>
         </div>}
+
+        {props.fieldErrors.customerId && <p className="form-error">{props.fieldErrors.customerId}</p>}
+        {props.fieldErrors.amount && <p className="form-error">{props.fieldErrors.amount}</p>}
+        {props.fieldErrors.status && <p className="form-error">{props.fieldErrors.status}</p>}
+        {props.fieldErrors.issueDate && <p className="form-error">{props.fieldErrors.issueDate}</p>}
+        {props.fieldErrors.dueDate && <p className="form-error">{props.fieldErrors.dueDate}</p>}
+        {props.error && <p className="form-error">{props.error}</p>}
     </form>
 }
