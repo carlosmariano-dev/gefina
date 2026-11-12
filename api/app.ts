@@ -1,13 +1,11 @@
-import express from "express";
-import path from "node:path";
 import fs from "node:fs";
-
-import dashboard from "./dashboard.route.ts"; 
-import invoices from "./invoice.route.ts";
+import path from "node:path";
+import express from "express";
 import customers from "./customer.route.ts";
-
-import pool from "./database.ts";
+import dashboard from "./dashboard.route.ts";
 import handleError from "./error.middleware.ts";
+import invoices from "./invoice.route.ts";
+import prisma from "./prisma.ts";
 
 const app = express();
 app.use(express.json());
@@ -21,18 +19,18 @@ app.use((request, _response, next) => {
 
 app.get("/api/health", async (_request, response) => {
   try {
-    const connect = await pool.query("SELECT datname FROM pg_database WHERE oid = 5;");
-  
-    response.status(200).json({ 
+    await prisma.$queryRaw`SELECT 1;`;
+
+    response.status(200).json({
       server: "Server is running.",
-      database: connect.rows[0].datname
+      database: "Database avaliable",
     });
   } catch (error) {
     console.error(error);
 
-    response.status(500).json({ 
-      server: "Server is runing.",
-      database: "unavaliable"
+    response.status(500).json({
+      server: "Server is running.",
+      database: "Database unavaliable",
     });
   }
 });
@@ -41,15 +39,11 @@ app.use("/api/dashboard", dashboard);
 app.use("/api/customers", customers);
 app.use("/api/invoices", invoices);
 
-// app.use((request) => {
-//   if (!request.url.startsWith("/api")) express.static(dist);
-// });
-
 app.use(express.static(dist));
 
 app.use((request, response, next) => {
   if (
-    request.url.startsWith("/api") || 
+    request.url.startsWith("/api") ||
     request.method !== "GET" ||
     !fs.existsSync(path.join(dist, "index.html"))
   ) {
@@ -58,11 +52,6 @@ app.use((request, response, next) => {
   }
 
   response.sendFile(path.join(dist, "index.html"));
-  //  response.sendFile(path.join(dist, 'index.html'), (err) => {
-  //   if (err) {
-  //     next(); 
-  //   }
-  // });
 });
 
 app.use((_request, response) => {
