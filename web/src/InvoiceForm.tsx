@@ -129,7 +129,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
             onClick={props.onDelete}
             disabled={props.busy}
           >
-            {props.busy && props.confirmDelete ? "Eliminando..." : "Eliminar"}
+            {props.busy && props.confirmDelete ? "Excluindo..." : "Excluir"}
           </button>
         )}
         <button
