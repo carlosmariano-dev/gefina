@@ -16,7 +16,7 @@ export default function InvoiceSummaryTable(props: InvoiceSummaryTableProps) {
     <div className="flex-1 p-4 bg-surface border border-border rounded-surface">
       <h2 className="text-xl font-semibold">{props.title}</h2>
 
-      <table>
+      <table className="w-full border-collapse">
         <thead>
           <tr>
             <th
