@@ -10,16 +10,16 @@ export function situationLabel(situation: InvoiceSituation) {
 
 export function situationClass(situation: InvoiceSituation) {
   return situation === "paid"
-    ? "situation-paid"
+    ? "text-paid"
     : situation === "overdue"
-      ? "situation-overdue"
-      : "situation-pending";
+      ? "text-overdue"
+      : "text-pending";
 }
 
 export function formatCurrency(cents: number): string {
   const formatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
-    currency: "BRL",
+    currency: "BRL"
   });
 
   return formatter.format(cents / 100);
@@ -29,7 +29,7 @@ export function formatDate(isoDate: string): string {
   const formatter = new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
     month: "2-digit",
-    year: "numeric",
+    year: "numeric"
   });
 
   return formatter.format(new Date(`${isoDate}T00:00:00`));
