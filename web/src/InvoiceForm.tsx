@@ -5,7 +5,7 @@ import type {
   Invoice,
   InvoiceFieldErrors,
   InvoiceInput,
-  InvoiceStatus,
+  InvoiceStatus
 } from "./invoiceType.ts";
 
 interface InvoiceFormProps {
@@ -24,19 +24,19 @@ interface InvoiceFormProps {
 
 export default function InvoiceForm(props: InvoiceFormProps) {
   const [customerId, setCustomerId] = useState(
-    !props.invoice ? undefined : String(props.invoice.customer.id),
+    !props.invoice ? undefined : String(props.invoice.customer.id)
   );
   const [amount, setAmount] = useState(
-    !props.invoice ? "" : (props.invoice.amount / 100).toFixed(2),
+    !props.invoice ? "" : (props.invoice.amount / 100).toFixed(2)
   );
   const [status, setStatus] = useState<InvoiceStatus>(
-    !props.invoice ? "pending" : props.invoice.status,
+    !props.invoice ? "pending" : props.invoice.status
   );
   const [issueDate, setIssueDate] = useState(
-    !props.invoice ? "" : props.invoice.issueDate,
+    !props.invoice ? "" : props.invoice.issueDate
   );
   const [dueDate, setDueDate] = useState(
-    !props.invoice ? "" : props.invoice.dueDate,
+    !props.invoice ? "" : props.invoice.dueDate
   );
 
   const handleSubmit = (event: SubmitEvent) => {
@@ -48,26 +48,26 @@ export default function InvoiceForm(props: InvoiceFormProps) {
       amount: Math.round(Number(amount) * 100),
       status,
       issueDate,
-      dueDate,
+      dueDate
     });
   };
 
   const field = "flex flex-col gap-1";
   const label = "text-sm text-text-muted";
-  const input = "px-3 py-2 border border-border rounded-control bg-surface-raised scheme-dark focus-visible:outline-2 focus-visible:outline-primary"
-  const button = "flex-1 px-4 py-2 rounded-control cursor-pointer disabled:cursor-default disable:opacity-60 focus-visible:outline-2 focus-visible:outline-primary";
+  const input =
+    "px-3 py-2 border border-border rounded-control bg-surface-raised scheme-dark focus-visible:outline-2 focus-visible:outline-primary";
+  const button =
+    "flex-1 px-4 py-2 rounded-control cursor-pointer disabled:cursor-default disable:opacity-60 focus-visible:outline-2 focus-visible:outline-primary";
   const error = "text-sm text-overdue";
 
   return (
-    <form 
-      className="flex flex-col gap-4"
-      onSubmit={handleSubmit}>
-      <h2 className="text-xl font-semibold">{!props.invoice ? "Criar Fatura" : "Editar Fatura"}</h2>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <h2 className="text-xl font-semibold">
+        {!props.invoice ? "Criar Fatura" : "Editar Fatura"}
+      </h2>
 
       <div className={field}>
-        <label
-          className={label}
-          htmlFor="customer">
+        <label className={label} htmlFor="customer">
           Cliente
         </label>
         <select
@@ -89,26 +89,22 @@ export default function InvoiceForm(props: InvoiceFormProps) {
       </div>
       <div className="flex gap-2">
         <div className={`${field} flex-1`}>
-        <label 
-          className={label}
-          htmlFor="amount">
-          Valor
-        </label>
-        <input
-          className={input}
-          id="amount"
-          type="number"
-          step="0.01"
-          min="0.01"
-          value={amount}
-          onChange={(event) => setAmount(event.target.value)}
-          required
-        />
+          <label className={label} htmlFor="amount">
+            Valor
+          </label>
+          <input
+            className={input}
+            id="amount"
+            type="number"
+            step="0.01"
+            min="0.01"
+            value={amount}
+            onChange={(event) => setAmount(event.target.value)}
+            required
+          />
         </div>
         <div className={field}>
-          <label 
-            className={label}
-            htmlFor="status">
+          <label className={label} htmlFor="status">
             Situação
           </label>
           <select
@@ -124,9 +120,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
       </div>
       <div className="flex gap-2">
         <div className={`${field} flex-1`}>
-          <label 
-            className={label}
-            htmlFor="issueDate">
+          <label className={label} htmlFor="issueDate">
             Emissão
           </label>
           <input
@@ -139,9 +133,7 @@ export default function InvoiceForm(props: InvoiceFormProps) {
           />
         </div>
         <div className={`${field} flex-1`}>
-          <label 
-            className={label}
-            htmlFor="dueDate">
+          <label className={label} htmlFor="dueDate">
             Vencimento
           </label>
           <input
@@ -175,12 +167,12 @@ export default function InvoiceForm(props: InvoiceFormProps) {
         >
           Cancelar
         </button>
-        <button 
-          className={`${button} border border-transparent bg-primary`} 
-          type="submit" 
+        <button
+          className={`${button} border border-transparent bg-primary`}
+          type="submit"
           disabled={props.busy}
         >
-        {props.busy && !props.confirmDelete ? "Salvando..." : "Salvar"}
+          {props.busy && !props.confirmDelete ? "Salvando..." : "Salvar"}
         </button>
       </div>
 

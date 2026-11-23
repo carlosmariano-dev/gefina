@@ -6,18 +6,18 @@ import {
   createInvoice,
   deleteInvoice,
   getAllInvoices,
-  updateInvoice,
+  updateInvoice
 } from "./invoiceApi.ts";
 import type {
   Invoice,
   InvoiceFieldErrors,
-  InvoiceInput,
+  InvoiceInput
 } from "./invoiceType.ts";
 
 export default function InvoicePage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [customersOptions, setCustomersOptions] = useState<CustomerOption[]>(
-    [],
+    []
   );
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<InvoiceFieldErrors>({});

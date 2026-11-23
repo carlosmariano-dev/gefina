@@ -3,7 +3,7 @@ import {
   formatCurrency,
   formatDate,
   situationClass,
-  situationLabel,
+  situationLabel
 } from "./utils.ts";
 
 interface InvoiceRowProps {
@@ -25,8 +25,10 @@ export default function InvoiceRow(props: InvoiceRowProps) {
       </td>
       <td className={`${tdStyle} text-center tabular-nums`}>
         {formatDate(props.invoice.dueDate)}
-        </td>
-      <td className={`${tdStyle} text-center ${situationClass(props.invoice.situation)}`}>
+      </td>
+      <td
+        className={`${tdStyle} text-center ${situationClass(props.invoice.situation)}`}
+      >
         {situationLabel(props.invoice.situation)}
       </td>
       <td className={`${tdStyle} px-0 text-center`}>

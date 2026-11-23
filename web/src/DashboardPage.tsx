@@ -37,7 +37,8 @@ export default function DashboardPage() {
 
   if (loading) return <p className="text-sm text-text-muted">Carregando...</p>;
 
-  if (error !== null || dashboard === null) return <p className="text-overdue">{error}</p>;
+  if (error !== null || dashboard === null)
+    return <p className="text-overdue">{error}</p>;
 
   return (
     <div>
@@ -77,7 +78,9 @@ export default function DashboardPage() {
         />
       </div>
 
-      <small className="fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2">&copy; 2026. Gefina - Gestão financeira dimples e eficiente.</small>
+      <small className="fixed bottom-0 left-[calc(50%+120px)] -translate-x-1/2">
+        &copy; 2026. Gefina - Gestão financeira dimples e eficiente.
+      </small>
     </div>
   );
 }

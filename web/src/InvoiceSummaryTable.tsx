@@ -19,9 +19,19 @@ export default function InvoiceSummaryTable(props: InvoiceSummaryTableProps) {
       <table>
         <thead>
           <tr>
-            <th className={`${base} text-sm text-left font-medium text-text-muted`}>Cliente</th>
-            <th className={`${base} text-sm text-left font-medium text-text-muted`}>Valor</th>
-            <th className={`${base} text-sm font-medium text-text-muted`}>{props.dateLabel}</th>
+            <th
+              className={`${base} text-sm text-left font-medium text-text-muted`}
+            >
+              Cliente
+            </th>
+            <th
+              className={`${base} text-sm text-left font-medium text-text-muted`}
+            >
+              Valor
+            </th>
+            <th className={`${base} text-sm font-medium text-text-muted`}>
+              {props.dateLabel}
+            </th>
           </tr>
         </thead>
         <tbody>
